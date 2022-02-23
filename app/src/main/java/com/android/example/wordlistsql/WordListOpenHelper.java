@@ -213,14 +213,12 @@ public class WordListOpenHelper extends SQLiteOpenHelper {
     }// fin delete . hay que implementarlo en WordListAdapter
 
 
-
-
     /**
      * Actualiza la fila indicando id y texto nuevo
      *
-     * @param id id de la palabra
+     * @param id   id de la palabra
      * @param word nuevo string
-     * @return  devuelve numerode filas
+     * @return devuelve numerode filas
      */
     public int update(int id, String word) {
         // iniciamos numero de filas como -1
@@ -241,11 +239,42 @@ public class WordListOpenHelper extends SQLiteOpenHelper {
                     new String[]{String.valueOf(id)}); // tiene que ser array list de argumentos que usamos con interogante una linea  arriba
 
         } catch (Exception e) {
-            Log.d (TAG, "UPDATE EXCEPTION! " + e.getMessage());
+            Log.d(TAG, "UPDATE EXCEPTION! " + e.getMessage());
         }
         // devolvemos numero de filas afectadas, si no hay cambios devolvemos -1 declarado antes
         return mNumberOfRowsUpdated;
     }
+
+
+//                    Cursor query (  String table, // The table to query
+//                                    String[] columns, // The columns to return
+//                                    String selection, // WHERE statement
+//                                    String[] selectionArgs, // Arguments to WHERE
+//                                    String groupBy, // Grouping filter. Not used.
+//                                    String having, // Additional condition filter. Not used.
+//                                    String orderBy) // Ordering. Setting to null uses default.
+
+    /**
+     * Metodo para hacer busqueda en la base de datos
+     */
+    public Cursor search(String searchString) {
+        String[] columns = new String[]{KEY_WORD};
+        String where = KEY_WORD + " LIKE ?";
+        searchString = "%" + searchString + "%";
+        String[] whereArgs = new String[]{searchString};
+
+        Cursor cursor = null;
+        try {
+            if (mReadableDB == null) {
+                mReadableDB = getReadableDatabase();
+            }
+            cursor = mReadableDB.query(WORD_LIST_TABLE, columns, where, whereArgs, null, null, null);
+        } catch (Exception e) {
+            Log.d(TAG, "SEARCH EXCEPTION! " + e);
+        }
+        return cursor;
+    }// fin search
+
 
 
 }

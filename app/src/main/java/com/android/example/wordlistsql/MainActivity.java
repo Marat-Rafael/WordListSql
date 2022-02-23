@@ -25,6 +25,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, WORD_EDIT);
             }
         });
-    }
+    } // fin onCreate
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -108,6 +110,36 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
-    }
+    } // fin onActivityResult
 
-}
+    /**
+     *  Metodo para inflar menu de opciones
+     *  tres puntos en la pantalla principal
+     * @param menu
+     * @return
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    } // fin onCreateOptionMenu
+
+    /**
+     * Metodo para seleciona elemnto del menu
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                // abrimos actividad de la busqueda
+                Intent intent = new Intent(getBaseContext(), SearchActivity.class);
+                startActivity(intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    } // fin onOptionItemSelected
+
+
+} // fin MainActivity class
